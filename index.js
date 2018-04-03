@@ -69,7 +69,7 @@ function sendUserListApiRequest(offset = 0){
                             return console.log(err);
                         }
 
-                        console.log("Succesfully exported users and written to " + config.filename + "!");
+                        console.log("Succesfully exported users and written to " + config.exportfile + "!");
                         process.exit(0);
                     }); 
                 }, {
