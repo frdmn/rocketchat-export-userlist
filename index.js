@@ -49,8 +49,8 @@ function sendUserListApiRequest(offset = 0){
 
             // Check for email addresses and their verification status
             for (var index in user.emails) {
-                userObject['mail-address_' + parseInt(index+1)] = user.emails[index].address;
-                userObject['verified-mail_' + parseInt(index+1)] = user.emails[index].verified;
+                userObject['mailAddress' + parseInt(index+1)] = user.emails[index].address;
+                userObject['verifiedMailAddress' + parseInt(index+1)] = user.emails[index].verified;
             }
 
             // Push to userArray
