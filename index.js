@@ -41,6 +41,7 @@ function sendUserListApiRequest(offset = 0){
                 "username": user.username,
                 "name": user.name,
                 "type": user.type,
+                "active": user.active,
                 "status": user.status,
                 "lastLogin": user.lastLogin,
                 "createdAt": user.createdAt,
