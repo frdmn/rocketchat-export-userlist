@@ -2,7 +2,7 @@
 
 Simple Node CLI tool to export a complete user list of a [Rocket.Chat](https://rocket.chat/) server as CSV (comma-separated values) file.
 
-![](https://i.imgur.com/SEvbk8W.png)
+![](https://i.imgur.com/SpImzqB.png)
 
 ![](https://i.imgur.com/jr0QShl.png)
 
