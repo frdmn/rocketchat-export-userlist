@@ -17,7 +17,7 @@ var userArray = [];
  * Function to repeatetly send rocketChatClient.users.list()
  * to iterate over result pagination (default max count = 100)
  * until final page is received
- * @param {Integer} offset Optional offset can be passed
+ * @param {Integer} offset - Optional offset can be passed
  */
 function sendUserListApiRequest(offset = 0){
     var count = 100;
