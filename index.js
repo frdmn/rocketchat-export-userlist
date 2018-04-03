@@ -47,8 +47,15 @@ function sendUserListApiRequest(offset = 0){
                 "_updatedAt": user._updatedAt
             };
 
+            // Check for email addresses and their verification status
+            for (var index in user.emails) {
+                userObject['mail-address_' + parseInt(index+1)] = user.emails[index].address;
+                userObject['verified-mail_' + parseInt(index+1)] = user.emails[index].verified;
+            }
+
             // Push to userArray
             userArray.push(userObject);
+
             // Callback to let eachSeries() know about current user processing
             return cb(null);
         },function(err) {
