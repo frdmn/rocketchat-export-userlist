@@ -84,8 +84,7 @@ function sendUserListApiRequest(offset = 0){
                             error(err);
                         }
 
-                        console.log("Completed export and written as JSON to \"" + config.exportfile + ".json\".");
-                        process.exit(0);
+                        success("Completed export and written as JSON to \"" + config.exportfile + ".json\".");
                     });
 
                 } else {
@@ -96,8 +95,7 @@ function sendUserListApiRequest(offset = 0){
                             error(err);
                         }
 
-                        console.log("Completed export and written as CSV to \"" + config.exportfile + ".csv\".");
-                        process.exit(0);
+                        success("Completed export and written as CSV to \"" + config.exportfile + ".csv\".");
                     });
                 }
             }
@@ -157,6 +155,17 @@ function convertToJsonAndWriteToFile(users, cb) {
 function error(err, code = 1){
     console.log("error: ", err);
     return process.exit(code);
+}
+
+/** 
+ * Write (success) messages to console and exit the process with 
+ * error code 0
+ * @param  {String} message - String that holds the message to print
+ * @return {Object} - Return with error code 0
+ */
+function success(message){
+    console.log(message);
+    return process.exit(1);
 }
 
 // Authenticate using admin credentials stored in config object
