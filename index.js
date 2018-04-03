@@ -2,7 +2,16 @@ var fs = require('fs'),
     RocketChatApi = require('rocketchat').RocketChatApi,
     RocketChatClient = require('rocketchat').RocketChatClient,
     async = require('async'),
-    converter = require('json-2-csv');
+    converter = require('json-2-csv'),
+    program = require('commander');
+
+var packagejson = require('./package.json');
+
+program
+    .version(packagejson.version)
+    .description(packagejson.description)
+    .option('-j, --json', 'Export as JSON file rather than CSV')
+    .parse(process.argv);
 
 // Load configuration object for RocketChat API from JSON
 var config = require('./config.json');
