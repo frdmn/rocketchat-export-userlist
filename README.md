@@ -1,6 +1,8 @@
 # rocketchat-export-userlist
 
-Simple Node CLI tool to export a complete user of a [Rocket.Chat](https://rocket.chat/) server.
+Simple Node CLI tool to export a complete user of a [Rocket.Chat](https://rocket.chat/) server as CSV (comma-separated values) file.
+
+![](https://i.imgur.com/SEvbk8W.png)
 
 ## Installation
 
