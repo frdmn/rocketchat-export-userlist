@@ -35,8 +35,7 @@ function sendUserListApiRequest(offset = 0){
     rocketChatClient.users.list(offset, count, function (err, body) {
         if (err) {
             // Abort on possible errors
-            console.log("error: ", err);
-            return false;
+            error(err);
         }
 
         var total = body.total,
@@ -82,8 +81,7 @@ function sendUserListApiRequest(offset = 0){
                     convertToJsonAndWriteToFile(userArray, function(data){
                         if (data !== true) {
                             // Print possible errors
-                            console.log("error: ", err);
-                            process.exit(1);
+                            error(err);
                         }
 
                         console.log("Completed export and written as JSON to \"" + config.exportfile + ".json\".");
@@ -95,8 +93,7 @@ function sendUserListApiRequest(offset = 0){
                     convertToCsvAndWriteToFile(userArray, function(data){
                         if (data !== true) {
                             // Print possible errors
-                            console.log("error: ", err);
-                            process.exit(1);
+                            error(err);
                         }
 
                         console.log("Completed export and written as CSV to \"" + config.exportfile + ".csv\".");
@@ -151,6 +148,17 @@ function convertToJsonAndWriteToFile(users, cb) {
     }); 
 }
 
+/** 
+ * Function to write error message to console and also exit the process
+ * with error code 1
+ * @param  {String|Object} err - Object that holds the error message
+ * @return {Object} - Return with an optional error code (defaults to 1)  
+ */
+function error(err, code = 1){
+    console.log("error: ", err);
+    return process.exit(code);
+}
+
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
 	if (!err) {
@@ -158,7 +166,6 @@ rocketChatClient.authentication.login(config.username, config.password, function
 		sendUserListApiRequest();
 	} else {
         // Print possible errors
-        console.log("error: ", err);
-		process.exit(1);
+        error(err);
 	}
 })
