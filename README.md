@@ -11,6 +11,15 @@ Simple Node CLI tool to export a complete user of a [Rocket.Chat](https://rocket
     git clone https://github.com/frdmn/rocketchat-export-userlist
     ```
 
+3. Copy and adjust configuration file from sample:
+
+    ```shell
+    cp config.sample.json config.json
+    vi config.json
+    ```
+
+Make sure it contains proper user (with administration access) credentials
+
 3. Install the project dependencies:
 
     ```shell
