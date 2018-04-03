@@ -77,16 +77,32 @@ function sendUserListApiRequest(offset = 0){
             } else if(userArray.length === total){
                 console.log('Success! Found ' + userArray.length + ' in total.');
 
-                convertToCSV(userArray, function(data){
-                    if (data !== true) {
-                        // Print possible errors
-                        console.log("error: ", err);
-                        process.exit(1);
-                    }
+                if (program.json) {
+                    // Convert to JSON and write to file 
+                    convertToJsonAndWriteToFile(userArray, function(data){
+                        if (data !== true) {
+                            // Print possible errors
+                            console.log("error: ", err);
+                            process.exit(1);
+                        }
 
-                    console.log("Completed export and written as CSV to " + config.exportfile + ".");
-                    process.exit(0);
-                });
+                        console.log("Completed export and written as JSON to \"" + config.exportfile + ".json\".");
+                        process.exit(0);
+                    });
+
+                } else {
+                    // Convert to CSV and write to file
+                    convertToCsvAndWriteToFile(userArray, function(data){
+                        if (data !== true) {
+                            // Print possible errors
+                            console.log("error: ", err);
+                            process.exit(1);
+                        }
+
+                        console.log("Completed export and written as CSV to \"" + config.exportfile + ".csv\".");
+                        process.exit(0);
+                    });
+                }
             }
         });
     });
@@ -97,14 +113,14 @@ function sendUserListApiRequest(offset = 0){
  * @param {Array} users - Users array that holds all user objects
  * @param {Function()} cb - Callback function
  */
-function convertToCSV(users, cb) {
+function convertToCsvAndWriteToFile(users, cb) {
     // Convert to CSV
     converter.json2csv(users,function(err, csv){
         if(err) {
             return cb(err);
         }
 
-        fs.writeFile(config.exportfile, csv, function(err) {
+        fs.writeFile(config.exportfile + ".csv", csv, function(err) {
             if(err) {
                 return cb(err);
             }
@@ -117,6 +133,22 @@ function convertToCSV(users, cb) {
             wrap: '"'
         }
     });
+}
+
+/**
+ * Convert passed users to JSON and write to file
+ * @param {Array} users - Users array that holds all user objects
+ * @param {Function()} cb - Callback function
+ */
+function convertToJsonAndWriteToFile(users, cb) {
+    // writeToFileAsJson
+    fs.writeFile(config.exportfile + ".json", JSON.stringify(users,null,'\t'), function(err) {
+        if(err) {
+            return cb(err);
+        }
+
+        return cb(true);
+    }); 
 }
 
 // Authenticate using admin credentials stored in config object
