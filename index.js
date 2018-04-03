@@ -61,12 +61,12 @@ function sendUserListApiRequest(offset = 0){
             return cb(null);
         },function(err) {
             // Iteration completed
-            console.log("Added " + users.length + " users to array (" + userArray.length + " in total)...");
+            console.log("Added " + users.length + " users from this request (" + userArray.length + " so far)...");
             // Check if there more users that needs to be processed (with another API request)
             if (userArray.length < total) {
                 sendUserListApiRequest(userArray.length, count);
             } else if(userArray.length === total){
-                console.log('Successfully added all ' + userArray.length + ' users to array');
+                console.log('Success! Found ' + userArray.length + ' in total.');
 
                 // Convert to CSV
                 converter.json2csv(userArray,function(err, csv){
@@ -77,7 +77,7 @@ function sendUserListApiRequest(offset = 0){
                             return console.log(err);
                         }
 
-                        console.log("Succesfully exported users and written to " + config.exportfile + "!");
+                        console.log("Completed export and written as CSV to " + config.exportfile + ".");
                         process.exit(0);
                     }); 
                 }, {
