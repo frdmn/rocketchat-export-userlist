@@ -4,7 +4,7 @@ Simple Node CLI tool to export a complete user list of a [Rocket.Chat](https://r
 
 ![](https://i.imgur.com/SEvbk8W.png)
 
-![](https://i.imgur.com/0lFX7qr.png)
+![](https://i.imgur.com/jr0QShl.png)
 
 ## Installation
 
