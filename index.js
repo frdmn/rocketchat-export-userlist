@@ -68,26 +68,45 @@ function sendUserListApiRequest(offset = 0){
             } else if(userArray.length === total){
                 console.log('Success! Found ' + userArray.length + ' in total.');
 
-                // Convert to CSV
-                converter.json2csv(userArray,function(err, csv){
-                    if(err) return console.log(err);
-
-                    fs.writeFile(config.exportfile, csv, function(err) {
-                        if(err) {
-                            return console.log(err);
-                        }
-
-                        console.log("Completed export and written as CSV to " + config.exportfile + ".");
-                        process.exit(0);
-                    }); 
-                }, {
-                    checkSchemaDifferences: false,
-                    delimiter: {
-                        wrap: '"'
+                convertToCSV(userArray, function(data){
+                    if (data !== true) {
+                        // Print possible errors
+                        console.log("error: ", err);
+                        process.exit(1);
                     }
+
+                    console.log("Completed export and written as CSV to " + config.exportfile + ".");
+                    process.exit(0);
                 });
             }
         });
+    });
+}
+
+/**
+ * Convert passed users to CSV and write to file
+ * @param {Array} users - Users array that holds all user objects
+ * @param {Function()} cb - Callback function
+ */
+function convertToCSV(users, cb) {
+    // Convert to CSV
+    converter.json2csv(users,function(err, csv){
+        if(err) {
+            return cb(err);
+        }
+
+        fs.writeFile(config.exportfile, csv, function(err) {
+            if(err) {
+                return cb(err);
+            }
+
+            return cb(true);
+        }); 
+    }, {
+        checkSchemaDifferences: false,
+        delimiter: {
+            wrap: '"'
+        }
     });
 }
 
