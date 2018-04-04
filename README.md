@@ -40,6 +40,12 @@ Here's a short explanation how to use `rocketchat-export-userlist`:
     node export-userlist.js
     ```
 
+    If you rather have a JSON export, pass the `--json` argument:
+
+    ```shell
+    node export-userlist.js --json
+    ```
+
 ## Contributing
 
 1. Fork it
