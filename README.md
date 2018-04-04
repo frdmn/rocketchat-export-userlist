@@ -34,8 +34,11 @@ Make sure it contains proper user (with administration access) credentials
 
 Here's a short explanation how to use `rocketchat-export-userlist`:
 
-* Use it
-* Profit
+* Run `export-userlist.js`:
+
+    ```shell
+    node export-userlist.js
+    ```
 
 ## Contributing
 
