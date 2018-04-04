@@ -31,10 +31,9 @@ var userArray = [];
 function sendUserListApiRequest(offset = 0){
     var count = 100;
 
-    // Actual function to list users
+    // Actual function of REST client to get the available users
     rocketChatClient.users.list(offset, count, function (err, body) {
         if (err) {
-            // Abort on possible errors
             error(err);
         }
 
@@ -43,7 +42,9 @@ function sendUserListApiRequest(offset = 0){
 
         // Iterate over each user (asynchronously to not start another request until iteration is completed)
         async.eachSeries(users, function(user, cb){
-            // Parse desired keys that will be exposed in the export file
+            // Object that holds desired keys which are exposed in the export file.
+            // For further information and available keys, check our docs:
+            // https://rocket.chat/docs/developer-guides/rest-api/users/list/#example-result-admin-callee
             var userObject = {
                 "_id": user._id,
                 "username": user.username,
@@ -56,13 +57,12 @@ function sendUserListApiRequest(offset = 0){
                 "_updatedAt": user._updatedAt
             };
 
-            // Check for email addresses and their verification status
+            // Check for mail addresses and their verification status
             for (var index in user.emails) {
                 userObject['mailAddress' + parseInt(index+1)] = user.emails[index].address;
                 userObject['verifiedMailAddress' + parseInt(index+1)] = user.emails[index].verified;
             }
 
-            // Push to userArray
             userArray.push(userObject);
 
             // Callback to let eachSeries() know about current user processing
@@ -77,10 +77,8 @@ function sendUserListApiRequest(offset = 0){
                 console.log('Success! Found ' + userArray.length + ' in total.');
 
                 if (program.json) {
-                    // Convert to JSON and write to file 
                     convertToJsonAndWriteToFile(userArray, function(data){
                         if (data !== true) {
-                            // Print possible errors
                             error(err);
                         }
 
@@ -88,10 +86,8 @@ function sendUserListApiRequest(offset = 0){
                     });
 
                 } else {
-                    // Convert to CSV and write to file
                     convertToCsvAndWriteToFile(userArray, function(data){
                         if (data !== true) {
-                            // Print possible errors
                             error(err);
                         }
 
@@ -123,7 +119,9 @@ function convertToCsvAndWriteToFile(users, cb) {
             return cb(true);
         }); 
     }, {
+        // Do not check for key differences in each user object
         checkSchemaDifferences: false,
+        // Make sure to wrap CSV values in double quotes
         delimiter: {
             wrap: '"'
         }
@@ -136,7 +134,6 @@ function convertToCsvAndWriteToFile(users, cb) {
  * @param {Function()} cb - Callback function
  */
 function convertToJsonAndWriteToFile(users, cb) {
-    // writeToFileAsJson
     fs.writeFile(config.exportfile + ".json", JSON.stringify(users,null,'\t'), function(err) {
         if(err) {
             return cb(err);
@@ -150,7 +147,8 @@ function convertToJsonAndWriteToFile(users, cb) {
  * Function to write error message to console and also exit the process
  * with error code 1
  * @param  {String|Object} err - Object that holds the error message
- * @return {Object} - Return with an optional error code (defaults to 1)  
+ * @param  {Integer} code - Optional status code to exit with (defaults to 1)
+ * @return {Object} process - End process with exit code  
  */
 function error(err, code = 1){
     console.log("error: ", err);
@@ -171,10 +169,8 @@ function success(message){
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
 	if (!err) {
-        // Call sendUserListApiRequest() if no error 
 		sendUserListApiRequest();
 	} else {
-        // Print possible errors
         error(err);
 	}
 })
